@@ -24,7 +24,6 @@ async function getPropertyBySlug(slug) {
       slug: property.slug,
       name: property.name,
       price: property.price,
-      pricePeriod: property.pricePeriod,
       location: property.location,
       type: property.type,
       status: property.status,
@@ -36,8 +35,6 @@ async function getPropertyBySlug(slug) {
       images: property.images || [],
       videos: property.videos || [],
       available: property.available,
-      email: property.email,
-      phone: property.phone,
       createdAt: property.createdAt.toISOString(),
       updatedAt: property.updatedAt.toISOString(),
     };
@@ -83,17 +80,6 @@ export default async function PropertyDetailsPage({ params }) {
     return `₹${price.toLocaleString("en-IN")}`;
   };
 
-  const getPricePeriod = (period) => {
-    const periods = {
-      day: "/Day",
-      week: "/Week",
-      month: "/Month",
-      year: "/Year",
-      total: "",
-    };
-    return periods[period] || "";
-  };
-
   const breadcrumbItems = [
     { label: "Home", link: "/" },
     { label: "Properties", link: "/properties" },
@@ -125,8 +111,9 @@ export default async function PropertyDetailsPage({ params }) {
                       </span>
                       <div className="flex items-center gap-3">
                         <span className="badge bg-blue-600 text-white px-4 py-2 rounded-md font-semibold">
-                          {formatPrice(property.price)}
-                          {getPricePeriod(property.pricePeriod)}
+                          {property.price
+                            ? formatPrice(property.price)
+                            : "Price on Request"}
                         </span>
                         {!property.available && (
                           <span className="badge bg-red-600 text-white px-4 py-2 rounded-md font-semibold">
@@ -227,47 +214,6 @@ export default async function PropertyDetailsPage({ params }) {
 
               <div className="col-lg-4">
                 <div className="propertie-details-sidebar">
-                  <div className="propertie-sidebar-item mt-0">
-                    <h3>Property Contact</h3>
-                    <ul className="contact-list">
-                      <li>
-                        <div className="icon">
-                          <i className="fa-solid fa-location-dot"></i>
-                        </div>
-                        <div className="content">
-                          <span>Address</span>
-                          <h4>{property.location}</h4>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="icon">
-                          <i className="fa-solid fa-phone"></i>
-                        </div>
-                        <div className="content">
-                          <span>Phone</span>
-                          <h4>
-                            <a href={`tel:${property.phone}`}>
-                              {property.phone}
-                            </a>
-                          </h4>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="icon">
-                          <i className="fa-solid fa-envelopes"></i>
-                        </div>
-                        <div className="content">
-                          <span>Email</span>
-                          <h4>
-                            <a href={`mailto:${property.email}`}>
-                              {property.email}
-                            </a>
-                          </h4>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-
                   <div className="propertie-sidebar-item">
                     <h3>Contact Listing Owner</h3>
                     <form>
@@ -278,15 +224,6 @@ export default async function PropertyDetailsPage({ params }) {
                               type="text"
                               name="name"
                               placeholder="Full Name"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-sm-12">
-                          <div className="form-clt">
-                            <input
-                              type="email"
-                              name="email"
-                              placeholder="Email address"
                             />
                           </div>
                         </div>

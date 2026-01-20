@@ -30,7 +30,6 @@ async function getFeaturedProperties() {
       slug: property.slug,
       name: property.name,
       price: property.price,
-      pricePeriod: property.pricePeriod,
       location: property.location,
       bedrooms: property.bedrooms,
       bathrooms: property.bathrooms,

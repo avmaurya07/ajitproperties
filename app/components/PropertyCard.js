@@ -22,17 +22,6 @@ export default function PropertyCard({ property, isSlider = false }) {
     return `₹${price.toLocaleString("en-IN")}`;
   };
 
-  const getPricePeriod = (period) => {
-    const periods = {
-      day: "/Day",
-      week: "/Week",
-      month: "/Month",
-      year: "/Year",
-      total: "",
-    };
-    return periods[period] || "";
-  };
-
   const cardContent = (
     <div className={isSlider ? "project-box-items" : "project-box-items"}>
       <div className="project-thumb">
@@ -53,8 +42,7 @@ export default function PropertyCard({ property, isSlider = false }) {
           onError={() => setImgSrc("/assets/img/home-1/project/project-01.jpg")}
         />
         <span className="project-post-box">
-          {formatPrice(property.price)}
-          {getPricePeriod(property.pricePeriod)}
+          {property.price ? formatPrice(property.price) : "Price on Request"}
         </span>
       </div>
       <div className="project-content">

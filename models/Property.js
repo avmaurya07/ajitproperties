@@ -15,12 +15,7 @@ const propertySchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
-  },
-  pricePeriod: {
-    type: String,
-    enum: ["month", "week", "year", "day", "total"],
-    default: "total",
+    required: false,
   },
   location: {
     type: String,
@@ -77,17 +72,6 @@ const propertySchema = new mongoose.Schema({
   available: {
     type: Boolean,
     default: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    lowercase: true,
-  },
-  phone: {
-    type: String,
-    required: true,
-    trim: true,
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,

@@ -1,11 +1,26 @@
 import Breadcrumb from "@/app/components/Breadcrumb";
-import Link from "next/link";
+import connectDB from "@/lib/mongodb";
+import About from "@/models/About";
 
 export const metadata = {
   title: "About Us - Ajit Properties",
 };
 
-export default function AboutPage() {
+async function getAboutData() {
+  try {
+    await connectDB();
+    const about = await About.findOne().lean();
+    return about
+      ? { content: about.content }
+      : { content: "<p>About Us content not available.</p>" };
+  } catch (error) {
+    console.error("Error fetching about data:", error);
+    return { content: "<p>About Us content not available.</p>" };
+  }
+}
+
+export default async function AboutPage() {
+  const aboutData = await getAboutData();
   const breadcrumbItems = [{ label: "Home", link: "/" }, { label: "About Us" }];
 
   return (
@@ -14,22 +29,7 @@ export default function AboutPage() {
 
       <section className="about-section section-padding">
         <div className="container">
-          <h2>Where Finding a House Feels Like Home</h2>
-
-          <p className="mt-3">
-            We provide trusted listings, expert support, and seamless real
-            estate experiences.
-          </p>
-
-          <ul className="mt-4">
-            <li>✔ Trusted Listings</li>
-            <li>✔ 24/7 Support</li>
-            <li>✔ Emergency Service</li>
-          </ul>
-
-          <Link href="/contact" className="theme-btn mt-4">
-            CONTACT US
-          </Link>
+          <div dangerouslySetInnerHTML={{ __html: aboutData.content }} />
         </div>
       </section>
     </>
