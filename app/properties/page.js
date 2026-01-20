@@ -5,6 +5,7 @@ import PropertyCard from "@/app/components/PropertyCard";
 import Link from "next/link";
 import connectDB from "@/lib/mongodb";
 import Property from "@/models/Property";
+import FooterModel from "@/models/Footer";
 
 export const dynamic = "force-dynamic";
 
@@ -64,11 +65,78 @@ async function getPropertiesWithPagination(page = 1) {
   }
 }
 
+async function getFooterData() {
+  try {
+    await connectDB();
+    const footer = await FooterModel.findOne().lean();
+    if (!footer) {
+      return {
+        logo: "/assets/img/home-1/footer-logo.png",
+        description:
+          "Don't worry—we're here to help! Contact our support team or set custom alerts to find homes that perfectly match your needs and budget.",
+        contactInfo: {
+          phone: "89 (09) 2346 1894",
+          email: "example@gmail.com",
+          address: "UK, 1212; 102/B New Elephant Road London",
+        },
+        newsletter: {
+          title: "Subscribe To Our Newsletter",
+          placeholder: "Email address",
+          buttonText: "SUBSCRIBE",
+        },
+        quickLinks: [
+          {
+            title: "Quick links",
+            links: [
+              { text: "About Us", url: "/about" },
+              { text: "Our Team", url: "/team" },
+              { text: "Property", url: "/properties" },
+            ],
+          },
+        ],
+        copyright:
+          "© 2025 Powered By <b>Ajit Properties</b>. All Rights Reserved.",
+      };
+    }
+    return footer;
+  } catch (error) {
+    console.error("Error fetching footer data:", error);
+    return {
+      logo: "/assets/img/home-1/footer-logo.png",
+      description:
+        "Don't worry—we're here to help! Contact our support team or set custom alerts to find homes that perfectly match your needs and budget.",
+      contactInfo: {
+        phone: "89 (09) 2346 1894",
+        email: "example@gmail.com",
+        address: "UK, 1212; 102/B New Elephant Road London",
+      },
+      newsletter: {
+        title: "Subscribe To Our Newsletter",
+        placeholder: "Email address",
+        buttonText: "SUBSCRIBE",
+      },
+      quickLinks: [
+        {
+          title: "Quick links",
+          links: [
+            { text: "About Us", url: "/about" },
+            { text: "Our Team", url: "/team" },
+            { text: "Property", url: "/properties" },
+          ],
+        },
+      ],
+      copyright:
+        "© 2025 Powered By <b>Ajit Properties</b>. All Rights Reserved.",
+    };
+  }
+}
+
 export default async function PropertiesPage({ searchParams }) {
   const params = await searchParams;
   const page = Number(params?.page) || 1;
   const { properties, totalPages, currentPage, totalCount } =
     await getPropertiesWithPagination(page);
+  const footerData = await getFooterData();
 
   const breadcrumbItems = [
     { label: "Home", link: "/" },
@@ -145,8 +213,6 @@ export default async function PropertiesPage({ searchParams }) {
           )}
         </div>
       </section>
-
-      <Footer />
     </>
   );
 }
