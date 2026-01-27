@@ -14,6 +14,7 @@ import HomeTestimonial from "@/models/HomeTestimonial";
 import HomeContact from "@/models/HomeContact";
 import HomeVideo from "@/models/HomeVideo";
 import HomeProject from "@/models/HomeProject";
+import { navigate } from "next/dist/client/components/segment-cache/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -118,7 +119,6 @@ async function getFooterData() {
     };
   }
 }
-
 async function getHomeHeroData() {
   try {
     await connectDB();
@@ -944,7 +944,7 @@ export default async function HomePage() {
                   {heroData.description}
                 </p>
                 <div className="form-area">
-                  {/* <ul className="nav">
+                  <ul className="nav">
                     {heroData.searchCategories.map((category, index) => (
                       <li
                         key={index}
@@ -960,7 +960,7 @@ export default async function HomePage() {
                         </a>
                       </li>
                     ))}
-                  </ul> */}
+                  </ul>
                   <div className="tab-content">
                     {heroData.searchCategories.map((category, index) => (
                       <div
@@ -968,8 +968,9 @@ export default async function HomePage() {
                         id={category.name}
                         className={`tab-pane fade ${index === 0 ? "show active" : ""}`}
                       >
-                        {/* <form
-                          action="#"
+                        <form
+                          action={`/properties/${category.value}`}
+                          method="get"
                           className="wow fadeInUp"
                           data-wow-delay=".3s"
                         >
@@ -977,65 +978,45 @@ export default async function HomePage() {
                             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                               <div className="form-item">
                                 <h6>Location</h6>
-                                <input type="text" placeholder="Looking For?" />
+                                <input
+                                  type="text"
+                                  name="location"
+                                  placeholder="Looking For?"
+                                />
                               </div>
                             </div>
                             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                               <div className="form-item">
-                                <h6>Category</h6>
-                                <div className="form">
-                                  <select className="single-select w-100">
-                                    <option>Select Category</option>
-                                    {heroData.searchCategories.map(
-                                      (cat, idx) => (
-                                        <option
-                                          key={idx}
-                                          value={cat.value}
-                                          className=" text-black"
-                                        >
-                                          {cat.name}
-                                        </option>
-                                      ),
-                                    )}
-                                  </select>
-                                </div>
+                                <h6>Bedrooms</h6>
+                                <input
+                                  type="number"
+                                  name="bedrooms"
+                                  placeholder="Min Bedrooms"
+                                  min="0"
+                                />
                               </div>
                             </div>
                             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                               <div className="form-item">
-                                <h6>Location</h6>
-                                <div className="form">
-                                  <select className="single-select w-100">
-                                    <option>Select Location</option>
-                                    {heroData.searchLocations.map(
-                                      (loc, idx) => (
-                                        <option
-                                          key={idx}
-                                          value={loc.value}
-                                          className=" text-black"
-                                        >
-                                          {loc.name}
-                                        </option>
-                                      ),
-                                    )}
-                                  </select>
-                                </div>
+                                <h6>Bathrooms</h6>
+                                <input
+                                  type="number"
+                                  name="bathrooms"
+                                  placeholder="Min Bathrooms"
+                                  min="0"
+                                />
                               </div>
                             </div>
                             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                               <div className="form-item text-align-right">
-                                <button
-                                  type="submit"
-                                  className="theme-btn"
-                                  // onClick={() => openApna(location, category)}
-                                >
+                                <button type="submit" className="theme-btn">
                                   Search{" "}
                                   <i className="fa-solid fa-magnifying-glass"></i>
                                 </button>
                               </div>
                             </div>
                           </div>
-                        </form> */}
+                        </form>
                         <div className="button-list">
                           {heroData.buttonLinks.map((link, idx) => (
                             <Link
