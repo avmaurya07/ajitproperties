@@ -944,7 +944,7 @@ export default async function HomePage() {
                   {heroData.description}
                 </p>
                 <div className="form-area">
-                  <ul className="nav">
+                  {/* <ul className="nav">
                     {heroData.searchCategories.map((category, index) => (
                       <li
                         key={index}
@@ -960,7 +960,7 @@ export default async function HomePage() {
                         </a>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                   <div className="tab-content">
                     {heroData.searchCategories.map((category, index) => (
                       <div
@@ -968,7 +968,7 @@ export default async function HomePage() {
                         id={category.name}
                         className={`tab-pane fade ${index === 0 ? "show active" : ""}`}
                       >
-                        <form
+                        {/* <form
                           action="#"
                           className="wow fadeInUp"
                           data-wow-delay=".3s"
@@ -976,7 +976,7 @@ export default async function HomePage() {
                           <div className="row g-4 align-items-center justify-content-between">
                             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                               <div className="form-item">
-                                <h6>Keyword</h6>
+                                <h6>Location</h6>
                                 <input type="text" placeholder="Looking For?" />
                               </div>
                             </div>
@@ -1024,14 +1024,18 @@ export default async function HomePage() {
                             </div>
                             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                               <div className="form-item text-align-right">
-                                <button type="submit" className="theme-btn">
+                                <button
+                                  type="submit"
+                                  className="theme-btn"
+                                  // onClick={() => openApna(location, category)}
+                                >
                                   Search{" "}
                                   <i className="fa-solid fa-magnifying-glass"></i>
                                 </button>
                               </div>
                             </div>
                           </div>
-                        </form>
+                        </form> */}
                         <div className="button-list">
                           {heroData.buttonLinks.map((link, idx) => (
                             <Link

@@ -51,7 +51,7 @@ export default function PropertyCard({ property, isSlider = false }) {
           {property.location || "Location not specified"}
         </span>
         <h3>
-          <Link href={`/properties/${property.slug}`}>
+          <Link href={`/property/${property.slug}`}>
             {property.name || "Untitled Property"}
           </Link>
         </h3>
@@ -90,10 +90,7 @@ export default function PropertyCard({ property, isSlider = false }) {
             </li>
           )}
         </ul>
-        <Link
-          href={`/properties/${property.slug}`}
-          className="project-link-btn"
-        >
+        <Link href={`/property/${property.slug}`} className="project-link-btn">
           <i className="flaticon-home"></i>View Details
         </Link>
       </div>

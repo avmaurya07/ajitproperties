@@ -80,7 +80,23 @@ export default function Header() {
                         <Link href="/">Home</Link>
                       </li>
                       <li>
-                        <Link href="/properties">Properties</Link>
+                        <Link href="#">Properties</Link>
+                        <ul className="submenu">
+                          <li>
+                            <Link href="/properties/Apartment">Apartment</Link>
+                          </li>
+                          <li>
+                            <Link href="/properties/House">House</Link>
+                          </li>
+                          <li>
+                            <Link href="/properties/Villa">Villa</Link>
+                          </li>
+                          <li>
+                            <Link href="/properties/Commercial">
+                              Commercial
+                            </Link>
+                          </li>
+                        </ul>
                       </li>
                       <li>
                         <Link href="/about">About Us</Link>
