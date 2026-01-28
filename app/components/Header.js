@@ -29,7 +29,7 @@ export default function Header() {
                       src="/assets/img/logo/logo.png"
                       alt="Ajit Properties Logo"
                       width={150}
-                      height={50}
+                      height={30}
                     />
                   </Link>
                 </div>
@@ -56,8 +56,8 @@ export default function Header() {
                   <Image
                     src="/assets/img/logo/logo.png"
                     alt="Ajit Properties Logo"
-                    width={150}
-                    height={50}
+                    width={120}
+                    height={30}
                     priority
                   />
                 </Link>
@@ -65,8 +65,8 @@ export default function Header() {
                   <Image
                     src="/assets/img/logo/logo.png"
                     alt="Ajit Properties Logo"
-                    width={150}
-                    height={50}
+                    width={120}
+                    height={30}
                     priority
                   />
                 </Link>
