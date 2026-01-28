@@ -1,5 +1,6 @@
 import Header from "@/app/components/Header";
 import PropertyCard from "@/app/components/PropertyCard";
+import ContactForm from "@/app/components/ContactForm";
 import Link from "next/link";
 import Image from "next/image";
 import connectDB from "@/lib/mongodb";
@@ -799,10 +800,10 @@ async function getHomeContactData() {
         mapUrl:
           "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3889.5733634314897!2d100.90275000000001!3d12.8708096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3102941744fdc3d1%3A0xeb2643eac204ed35!2sTiger%20Park%20Pattaya!5e0!3m2!1sen!2sin!4v1767354493548!5m2!1sen!2sin",
         formCategories: [
-          "Real Estate",
-          "Property management",
-          "Market analysis",
-          "Home interior",
+          { name: "Real Estate", value: "real-estate" },
+          { name: "Property management", value: "property-management" },
+          { name: "Market analysis", value: "market-analysis" },
+          { name: "Home interior", value: "home-interior" },
         ],
       };
     }
@@ -811,11 +812,14 @@ async function getHomeContactData() {
       mapUrl:
         contact.mapUrl ||
         "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3889.5733634314897!2d100.90275000000001!3d12.8708096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3102941744fdc3d1%3A0xeb2643eac204ed35!2sTiger%20Park%20Pattaya!5e0!3m2!1sen!2sin!4v1767354493548!5m2!1sen!2sin",
-      formCategories: contact.formCategories || [
-        "Real Estate",
-        "Property management",
-        "Market analysis",
-        "Home interior",
+      formCategories: (contact.formCategories || []).map((cat) => ({
+        name: cat.name,
+        value: cat.value,
+      })) || [
+        { name: "Real Estate", value: "real-estate" },
+        { name: "Property management", value: "property-management" },
+        { name: "Market analysis", value: "market-analysis" },
+        { name: "Home interior", value: "home-interior" },
       ],
     };
   } catch (error) {
@@ -837,10 +841,10 @@ async function getHomeContactData() {
       mapUrl:
         "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3889.5733634314897!2d100.90275000000001!3d12.8708096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3102941744fdc3d1%3A0xeb2643eac204ed35!2sTiger%20Park%20Pattaya!5e0!3m2!1sen!2sin!4v1767354493548!5m2!1sen!2sin",
       formCategories: [
-        "Real Estate",
-        "Property management",
-        "Market analysis",
-        "Home interior",
+        { name: "Real Estate", value: "real-estate" },
+        { name: "Property management", value: "property-management" },
+        { name: "Market analysis", value: "market-analysis" },
+        { name: "Home interior", value: "home-interior" },
       ],
     };
   }
@@ -1450,72 +1454,7 @@ export default async function HomePage() {
                       {contactData.title}
                     </h2>
                   </div>
-                  <form action="#">
-                    <div className="row g-4">
-                      <div
-                        className="col-lg-6 wow fadeInUp"
-                        data-wow-delay=".2s"
-                      >
-                        <div className="form-clt">
-                          <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            placeholder="Full Name"
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="col-lg-6 wow fadeInUp"
-                        data-wow-delay=".4s"
-                      >
-                        <div className="form-clt">
-                          <input
-                            type="text"
-                            name="email"
-                            id="email"
-                            placeholder="Email address"
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="col-lg-12 wow fadeInUp"
-                        data-wow-delay=".2s"
-                      >
-                        <div className="form-clt">
-                          <div className="form">
-                            <select className="single-select w-100">
-                              {contactData.formCategories.map((item, index) => (
-                                <option key={index} value={item.value}>
-                                  {item.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-lg-12 wow fadeInUp"
-                        data-wow-delay=".6s"
-                      >
-                        <div className="form-clt">
-                          <textarea
-                            name="message"
-                            id="message"
-                            placeholder="Message Here*"
-                          ></textarea>
-                        </div>
-                      </div>
-                      <div
-                        className="col-lg-12 wow fadeInUp"
-                        data-wow-delay=".2s"
-                      >
-                        <button className="theme-btn" type="submit">
-                          {contactData.submitButtonText}
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                  <ContactForm formCategories={contactData.formCategories} />
                 </div>
               </div>
             </div>

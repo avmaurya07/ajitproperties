@@ -29,7 +29,6 @@ export default function Footer({ footerData }) {
     ],
     copyright: "© 2025 Powered By <b>Ajit Properties</b>. All Rights Reserved.",
   };
-
   return (
     <footer className="footer-section section-bg-2 fix">
       <div className="footer-shape">
@@ -57,19 +56,23 @@ export default function Footer({ footerData }) {
                 <ul className="footer-contact-list">
                   <li>
                     <i className="fa-solid fa-phone-xmark"></i>
-                    <a href={`tel:${footer.contactInfo.phone}`}>
-                      {footer.contactInfo.phone}
+                    <a
+                      href={`tel:${footer.contactInfo.phone || footer.contactInfo}`}
+                    >
+                      +91 {footer.contactInfo.phone || footer.contactInfo}
                     </a>
                   </li>
                   <li>
                     <i className="fa-solid fa-envelopes"></i>
-                    <a href={`mailto:${footer.contactInfo.email}`}>
-                      {footer.contactInfo.email}
+                    <a
+                      href={`mailto:${footer.contactInfo.email || footer.email}`}
+                    >
+                      {footer.contactInfo.email || footer.email}
                     </a>
                   </li>
                   <li>
                     <i className="fa-solid fa-location-dot"></i>
-                    {footer.contactInfo.address}
+                    {footer.contactInfo.address || footer.address}
                   </li>
                 </ul>
               </div>
