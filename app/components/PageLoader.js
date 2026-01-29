@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import "../styles/PageLoader.css";
 
-export default function PageLoader() {
+function PageLoaderContent() {
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -48,5 +48,13 @@ export default function PageLoader() {
         <p className="loader-subtitle">Loading your dream home...</p>
       </div>
     </div>
+  );
+}
+
+export default function PageLoader() {
+  return (
+    <Suspense fallback={null}>
+      <PageLoaderContent />
+    </Suspense>
   );
 }
