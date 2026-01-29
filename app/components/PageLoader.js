@@ -24,10 +24,38 @@ function PageLoaderContent() {
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 800);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [pathname, searchParams]);
+
+  useEffect(() => {
+    // Intercept all link clicks to show loader immediately
+    const handleLinkClick = (e) => {
+      const target = e.target.closest("a");
+      if (target && target.href) {
+        const currentUrl = window.location.href;
+        const targetUrl = target.href;
+
+        // Check if it's an internal navigation (not external link, not anchor, not same page)
+        if (
+          targetUrl.startsWith(window.location.origin) &&
+          !targetUrl.includes("#") &&
+          targetUrl !== currentUrl &&
+          !target.getAttribute("target")
+        ) {
+          setIsLoading(true);
+        }
+      }
+    };
+
+    // Add click listener to document
+    document.addEventListener("click", handleLinkClick);
+
+    return () => {
+      document.removeEventListener("click", handleLinkClick);
+    };
+  }, []);
 
   if (!isLoading) return null;
 
