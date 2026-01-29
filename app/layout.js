@@ -2,6 +2,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
+import PageLoader from "@/app/components/PageLoader";
 import connectDB from "@/lib/mongodb";
 import FooterModel from "@/models/Footer";
 
@@ -97,6 +98,7 @@ export default async function RootLayout({ children }) {
       </head>
 
       <body suppressHydrationWarning>
+        <PageLoader />
         <Header />
         <main>{children}</main>
         <Footer footerData={footerData} />

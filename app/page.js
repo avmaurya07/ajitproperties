@@ -1,7 +1,9 @@
 import Header from "@/app/components/Header";
 import PropertyCard from "@/app/components/PropertyCard";
 import ContactForm from "@/app/components/ContactForm";
+import FeaturedPropertiesSlider from "@/app/components/FeaturedPropertiesSlider";
 import Link from "next/link";
+
 import Image from "next/image";
 import connectDB from "@/lib/mongodb";
 import Property from "@/models/Property";
@@ -1074,9 +1076,10 @@ export default async function HomePage() {
                   <div className="icon">
                     <i className={offer.icon}></i>
                   </div>
+                  {/* <span>{offer.name}</span> */}
                   <div className="content">
-                    <h4>{offer.title}</h4>
-                    <p>{offer.description}</p>
+                    <h4>{offer.name}</h4>
+                    <p>{offer.count}</p>
                   </div>
                 </div>
               </div>
@@ -1096,29 +1099,7 @@ export default async function HomePage() {
             </h2>
           </div>
         </div>
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="swiper project-slider">
-            <div className="swiper-wrapper">
-              {featuredProperties.length > 0 ? (
-                featuredProperties.map((property) => (
-                  <div key={property._id} className="swiper-slide">
-                    <div className="px-2 md:px-3">
-                      <PropertyCard property={property} isSlider={true} />
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="swiper-slide">
-                  <div className="w-full text-center py-12">
-                    <p className="text-gray-600 text-lg">
-                      No featured properties available at the moment.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <FeaturedPropertiesSlider properties={featuredProperties} />
       </section>
 
       <section className="about-section fix section-bg section-padding pt-0">

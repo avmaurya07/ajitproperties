@@ -1,0 +1,38 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import "../styles/PageLoader.css";
+
+export default function PageLoader() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Hide loader after page loads
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isLoading) return null;
+
+  return (
+    <div className="page-loader">
+      <div className="loader-content">
+        <div className="house-loader">
+          <div className="house-icon">
+            <i className="flaticon-home"></i>
+          </div>
+          <div className="loader-bars">
+            <div className="bar bar-1"></div>
+            <div className="bar bar-2"></div>
+            <div className="bar bar-3"></div>
+          </div>
+        </div>
+        <h3 className="loader-text">Ajit Properties</h3>
+        <p className="loader-subtitle">Loading your dream home...</p>
+      </div>
+    </div>
+  );
+}

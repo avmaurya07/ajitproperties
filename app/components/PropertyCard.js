@@ -24,13 +24,13 @@ export default function PropertyCard({ property, isSlider = false }) {
 
   const cardContent = (
     <div className={isSlider ? "project-box-items" : "project-box-items"}>
-      <div className="project-thumb">
+      <div className="project-thumb h-64 bg-white">
         <Image
           src={imgSrc}
           alt={property.name || "Property"}
           width={600}
           height={400}
-          className="object-cover w-full"
+          className="object-contain w-full h-full"
           onError={() => setImgSrc("/assets/img/home-1/project/project-01.jpg")}
         />
         <Image
@@ -38,7 +38,7 @@ export default function PropertyCard({ property, isSlider = false }) {
           alt={property.name || "Property"}
           width={600}
           height={400}
-          className="object-cover w-full"
+          className="object-contain w-full h-full"
           onError={() => setImgSrc("/assets/img/home-1/project/project-01.jpg")}
         />
         <span className="project-post-box">

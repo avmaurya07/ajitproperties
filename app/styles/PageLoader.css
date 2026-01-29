@@ -1,0 +1,172 @@
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #16243e 0%, #1a2d4d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  animation: fadeOut 0.5s ease-in-out 1.5s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.loader-content {
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.house-loader {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
+.house-icon {
+  font-size: 80px;
+  color: #c2df93;
+  animation: bounce 1.5s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  background: rgba(194, 223, 147, 0.1);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  border: 3px solid rgba(194, 223, 147, 0.3);
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.loader-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+}
+
+.bar {
+  width: 8px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #fe8500 0%, #ff9933 100%);
+  animation: barPulse 1.2s ease-in-out infinite;
+}
+
+.bar-1 {
+  animation-delay: 0s;
+  height: 20px;
+}
+
+.bar-2 {
+  animation-delay: 0.2s;
+  height: 30px;
+}
+
+.bar-3 {
+  animation-delay: 0.4s;
+  height: 25px;
+}
+
+@keyframes barPulse {
+  0%,
+  100% {
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleY(1.8);
+    opacity: 1;
+  }
+}
+
+.loader-text {
+  color: #c2df93;
+  font-family: "Manrope", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  letter-spacing: 1px;
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.loader-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "Jost", sans-serif;
+  font-size: 16px;
+  margin: 0;
+  animation: subtitleFade 2s ease-in-out infinite;
+}
+
+@keyframes subtitleFade {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .house-icon {
+    font-size: 60px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .loader-text {
+    font-size: 24px;
+  }
+
+  .loader-subtitle {
+    font-size: 14px;
+  }
+
+  .loader-bars {
+    height: 30px;
+  }
+
+  .bar {
+    width: 6px;
+  }
+}
