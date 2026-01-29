@@ -75,6 +75,71 @@ export default function Footer({ footerData }) {
                     {footer.contactInfo.address || footer.address}
                   </li>
                 </ul>
+                {/* Social Media Links */}
+                {footer.socialLinks && (
+                  <div className="social-icon mt-4">
+                    {footer.socialLinks.facebook && (
+                      <a
+                        href={footer.socialLinks.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Facebook"
+                      >
+                        <i className="fab fa-facebook-f"></i>
+                      </a>
+                    )}
+                    {footer.socialLinks.twitter && (
+                      <a
+                        href={footer.socialLinks.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Twitter"
+                      >
+                        <i className="fab fa-twitter"></i>
+                      </a>
+                    )}
+                    {footer.socialLinks.instagram && (
+                      <a
+                        href={footer.socialLinks.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Instagram"
+                      >
+                        <i className="fab fa-instagram"></i>
+                      </a>
+                    )}
+                    {footer.socialLinks.linkedin && (
+                      <a
+                        href={footer.socialLinks.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="LinkedIn"
+                      >
+                        <i className="fab fa-linkedin-in"></i>
+                      </a>
+                    )}
+                    {footer.socialLinks.youtube && (
+                      <a
+                        href={footer.socialLinks.youtube}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="YouTube"
+                      >
+                        <i className="fab fa-youtube"></i>
+                      </a>
+                    )}
+                    {footer.socialLinks.whatsapp && (
+                      <a
+                        href={`https://wa.me/${footer.socialLinks.whatsapp}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="WhatsApp"
+                      >
+                        <i className="fab fa-whatsapp"></i>
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
             <div className="col-xl-6 wow fadeInUp" data-wow-delay=".5s">

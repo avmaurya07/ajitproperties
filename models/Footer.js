@@ -63,6 +63,32 @@ const footerSchema = new mongoose.Schema(
       type: String,
       default: "© 2025 Powered By <b>Ajit Properties</b>. All Rights Reserved.",
     },
+    socialLinks: {
+      facebook: {
+        type: String,
+        default: "",
+      },
+      twitter: {
+        type: String,
+        default: "",
+      },
+      instagram: {
+        type: String,
+        default: "",
+      },
+      linkedin: {
+        type: String,
+        default: "",
+      },
+      youtube: {
+        type: String,
+        default: "",
+      },
+      whatsapp: {
+        type: String,
+        default: "",
+      },
+    },
   },
   {
     timestamps: true,

@@ -12,12 +12,19 @@ async function getContactData() {
   try {
     await connectDB();
     const contact = await Contact.findOne().lean();
+
+    console.log(`hello`, contact);
     return contact
-      ? { phone: contact.phone, email: contact.email, address: contact.address }
-      : { phone: "", email: "", address: "" };
+      ? {
+          phone: contact.phone,
+          email: contact.email,
+          address: contact.address,
+          socialLinks: contact.socialLinks || {},
+        }
+      : { phone: "", email: "", address: "", socialLinks: {} };
   } catch (error) {
     console.error("Error fetching contact data:", error);
-    return { phone: "", email: "", address: "" };
+    return { phone: "", email: "", address: "", socialLinks: {} };
   }
 }
 
@@ -128,6 +135,86 @@ export default async function ContactPage() {
                 </div>
               </div>
             </div>
+
+            {/* Social Media Links */}
+            {contactData.socialLinks &&
+              Object.values(contactData.socialLinks).some((link) => link) && (
+                <div className="row mt-5">
+                  <div className="col-12">
+                    <div className="text-center">
+                      <h3 className="mb-4">Connect With Us</h3>
+                      <div className="social-links-wrapper d-flex justify-content-center gap-3">
+                        {contactData.socialLinks.facebook && (
+                          <a
+                            href={contactData.socialLinks.facebook}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="social-icon-contact"
+                            aria-label="Facebook"
+                          >
+                            <i className="fab fa-facebook-f"></i>
+                          </a>
+                        )}
+                        {contactData.socialLinks.twitter && (
+                          <a
+                            href={contactData.socialLinks.twitter}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="social-icon-contact"
+                            aria-label="Twitter"
+                          >
+                            <i className="fab fa-twitter"></i>
+                          </a>
+                        )}
+                        {contactData.socialLinks.instagram && (
+                          <a
+                            href={contactData.socialLinks.instagram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="social-icon-contact"
+                            aria-label="Instagram"
+                          >
+                            <i className="fab fa-instagram"></i>
+                          </a>
+                        )}
+                        {contactData.socialLinks.linkedin && (
+                          <a
+                            href={contactData.socialLinks.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="social-icon-contact"
+                            aria-label="LinkedIn"
+                          >
+                            <i className="fab fa-linkedin-in"></i>
+                          </a>
+                        )}
+                        {contactData.socialLinks.youtube && (
+                          <a
+                            href={contactData.socialLinks.youtube}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="social-icon-contact"
+                            aria-label="YouTube"
+                          >
+                            <i className="fab fa-youtube"></i>
+                          </a>
+                        )}
+                        {contactData.socialLinks.whatsapp && (
+                          <a
+                            href={`https://wa.me/${contactData.socialLinks.whatsapp}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="social-icon-contact"
+                            aria-label="WhatsApp"
+                          >
+                            <i className="fab fa-whatsapp"></i>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
           </div>
         </div>
       </section>

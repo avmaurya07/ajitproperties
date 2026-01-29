@@ -11,9 +11,10 @@ export default function MediaGallery({
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Prioritize videos first, then images
   const allMedia = [
-    ...images.map((img) => ({ type: "image", src: img })),
     ...videos.map((vid) => ({ type: "video", src: vid })),
+    ...images.map((img) => ({ type: "image", src: img })),
   ];
 
   const openGallery = (index) => {
@@ -41,62 +42,79 @@ export default function MediaGallery({
 
   return (
     <>
-      {images.length > 0 ? (
+      {/* Check if we have any media at all */}
+      {allMedia.length > 0 ? (
         <>
+          {/* Main large display - show first media item (video priority) */}
           <div className="details-image" onClick={() => openGallery(0)}>
-            <div className="relative h-96 w-full cursor-pointer">
-              <Image
-                src={images[0]}
-                alt={propertyName}
-                fill
-                className="object-cover rounded-lg"
-                priority
-              />
+            <div className="relative h-96 w-full cursor-pointer bg-white rounded-lg overflow-hidden">
+              {allMedia[0].type === "video" ? (
+                <VideoPlayer
+                  src={allMedia[0].src}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <Image
+                  src={allMedia[0].src}
+                  alt={propertyName}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              )}
             </div>
           </div>
 
-          {(images.length > 1 || videos.length > 0) && (
+          {/* Thumbnail row - show remaining media */}
+          {allMedia.length > 1 && (
             <div className="mt-3 flex flex-row gap-1 md:gap-1 row">
-              {/* Show second image if exists */}
-              {images[1] && (
+              {/* Second media item */}
+              {allMedia[1] && (
                 <div className="flex-1 min-w-0 col-xl-4 col-lg-6 col-md-6">
                   <div className="details-image" onClick={() => openGallery(1)}>
-                    <div className="relative h-48 w-full cursor-pointer">
-                      <Image
-                        src={images[1]}
-                        alt={`${propertyName} - 2`}
-                        fill
-                        className="object-cover rounded-lg"
-                      />
+                    <div className="relative h-48 w-full cursor-pointer bg-white rounded-lg overflow-hidden">
+                      {allMedia[1].type === "video" ? (
+                        <VideoPlayer
+                          src={allMedia[1].src}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <Image
+                          src={allMedia[1].src}
+                          alt={`${propertyName} - 2`}
+                          fill
+                          className="object-cover"
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
               )}
-              {/* Show third image or video slot as +x overlay if more media */}
-              {(images.length > 2 || videos.length > 0) && (
+
+              {/* Third media item with +x overlay if more exist */}
+              {allMedia[2] && (
                 <div className="flex-1 min-w-0 col-xl-4 col-lg-6 col-md-6">
                   <div className="details-image" onClick={() => openGallery(2)}>
-                    <div className="relative h-48 w-full cursor-pointer">
-                      {images[2] ? (
-                        <Image
-                          src={images[2]}
-                          alt={`${propertyName} - 3`}
-                          fill
-                          className="object-cover rounded-lg"
+                    <div className="relative h-48 w-full cursor-pointer bg-white rounded-lg overflow-hidden">
+                      {allMedia[2].type === "video" ? (
+                        <VideoPlayer
+                          src={allMedia[2].src}
+                          className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="relative h-48 w-full">
-                          <VideoPlayer
-                            src={videos[0]}
-                            className="w-full h-full rounded-lg object-cover"
-                          />
-                        </div>
+                        <Image
+                          src={allMedia[2].src}
+                          alt={`${propertyName} - 3`}
+                          fill
+                          className="object-cover"
+                        />
                       )}
-                      {/* Overlay for +x */}
-                      {images.length + videos.length > 3 && (
+
+                      {/* Overlay for additional media count */}
+                      {allMedia.length > 3 && (
                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-lg">
                           <span className="text-white text-3xl font-bold select-none">
-                            +{images.length + videos.length - 3}
+                            +{allMedia.length - 3}
                           </span>
                         </div>
                       )}
@@ -107,45 +125,15 @@ export default function MediaGallery({
             </div>
           )}
         </>
-      ) : videos.length > 0 ? (
-        <>
-          <div className="details-image" onClick={() => openGallery(0)}>
-            <div className="relative h-96 w-full cursor-pointer">
-              <VideoPlayer
-                src={videos[0]}
-                className="w-full h-full rounded-lg object-cover"
-              />
-            </div>
-          </div>
-
-          {videos.length > 1 && (
-            <div className="row g-4 mt-3">
-              {videos.slice(1).map((video, idx) => (
-                <div key={`vid-${idx}`} className="col-xl-4 col-lg-6 col-md-6">
-                  <div
-                    className="details-image"
-                    onClick={() => openGallery(idx + 1)}
-                  >
-                    <div className="relative h-48 w-full cursor-pointer">
-                      <VideoPlayer
-                        src={video}
-                        className="w-full h-full rounded-lg object-cover"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </>
       ) : (
+        // Fallback default image
         <div className="details-image">
-          <div className="relative h-96 w-full">
+          <div className="relative h-96 w-full bg-white rounded-lg overflow-hidden">
             <Image
               src="/assets/img/home-1/project/project-01.jpg"
               alt="Default property"
               fill
-              className="object-cover rounded-lg"
+              className="object-cover"
             />
           </div>
         </div>
@@ -213,7 +201,7 @@ export default function MediaGallery({
             className="flex items-center justify-center w-screen h-screen"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative max-w-5xl max-h-[70vh] w-full h-full flex items-center justify-center transition-all duration-300 ease-in-out">
+            <div className="relative max-w-5xl max-h-[70vh] w-full h-full flex items-center justify-center transition-all duration-300 ease-in-out bg-white">
               <button
                 className="absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-gray-900 text-2xl transition-all duration-200 hover:rotate-90 z-[2147483647] shadow-xl border-2 border-gray-300"
                 onClick={closeGallery}

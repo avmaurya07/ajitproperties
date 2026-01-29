@@ -101,6 +101,14 @@ async function getFooterData() {
         ],
         copyright:
           "© 2025 Powered By <b>Ajit Properties</b>. All Rights Reserved.",
+        socialLinks: {
+          facebook: "",
+          twitter: "",
+          instagram: "",
+          linkedin: "",
+          youtube: "",
+          whatsapp: "",
+        },
       };
     }
     return footer;
@@ -132,6 +140,14 @@ async function getFooterData() {
       ],
       copyright:
         "© 2025 Powered By <b>Ajit Properties</b>. All Rights Reserved.",
+      socialLinks: {
+        facebook: "",
+        twitter: "",
+        instagram: "",
+        linkedin: "",
+        youtube: "",
+        whatsapp: "",
+      },
     };
   }
 }
@@ -349,7 +365,7 @@ export default async function PropertiesPage({ searchParams }) {
                       >
                         <i className="fas fa-search me-2"></i>Apply Filters
                       </button>
-                      <a
+                      <Link
                         href="/properties"
                         className="btn btn-outline-secondary"
                         style={{
@@ -359,7 +375,7 @@ export default async function PropertiesPage({ searchParams }) {
                         }}
                       >
                         <i className="fas fa-times me-2"></i>Clear Filters
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </form>

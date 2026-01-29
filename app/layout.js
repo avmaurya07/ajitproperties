@@ -43,6 +43,14 @@ async function getFooterData() {
         ],
         copyright:
           "© 2025 Powered By <b>Ajit Properties</b>. All Rights Reserved.",
+        socialLinks: {
+          facebook: "",
+          twitter: "",
+          instagram: "",
+          linkedin: "",
+          youtube: "",
+          whatsapp: "",
+        },
       };
     }
     return footer;
@@ -75,6 +83,14 @@ async function getFooterData() {
       ],
       copyright:
         "© 2025 Powered By <b>Ajit Properties</b>. All Rights Reserved.",
+      socialLinks: {
+        facebook: "",
+        twitter: "",
+        instagram: "",
+        linkedin: "",
+        youtube: "",
+        whatsapp: "",
+      },
     };
   }
 }
