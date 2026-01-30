@@ -121,7 +121,7 @@ export default async function ContactPage() {
             </div>
 
             {/* Social Media Links */}
-            {contactData.socialLinks &&
+            {/* {contactData.socialLinks &&
               Object.values(contactData.socialLinks).some((link) => link) && (
                 <div className="row mt-5">
                   <div className="col-12">
@@ -198,7 +198,7 @@ export default async function ContactPage() {
                     </div>
                   </div>
                 </div>
-              )}
+              )} */}
           </div>
         </div>
       </section>

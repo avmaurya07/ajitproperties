@@ -15,7 +15,7 @@ async function getFooterData() {
   try {
     await connectDB();
     const footer = await FooterModel.findOne().lean();
-
+    // console.log(footer);
     if (!footer) {
       throw new Error("Footer data not found in database");
     }
