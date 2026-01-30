@@ -4,6 +4,8 @@ import connectDB from "@/lib/mongodb";
 import Contact from "@/models/Contact";
 import HomeContact from "@/models/HomeContact";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Contact Us - Ajit Properties",
 };
@@ -13,18 +15,19 @@ async function getContactData() {
     await connectDB();
     const contact = await Contact.findOne().lean();
 
-    console.log(`hello`, contact);
-    return contact
-      ? {
-          phone: contact.phone,
-          email: contact.email,
-          address: contact.address,
-          socialLinks: contact.socialLinks || {},
-        }
-      : { phone: "", email: "", address: "", socialLinks: {} };
+    if (!contact) {
+      throw new Error("Contact data not found in database");
+    }
+
+    return {
+      phone: contact.phone,
+      email: contact.email,
+      address: contact.address,
+      socialLinks: contact.socialLinks || {},
+    };
   } catch (error) {
     console.error("Error fetching contact data:", error);
-    return { phone: "", email: "", address: "", socialLinks: {} };
+    throw error;
   }
 }
 
@@ -32,42 +35,23 @@ async function getHomeContactData() {
   try {
     await connectDB();
     const homeContact = await HomeContact.findOne().lean();
-    return homeContact
-      ? {
-          title: homeContact.title,
-          subtitle: homeContact.subtitle,
-          mapEmbedUrl: homeContact.mapEmbedUrl,
-          formCategories: (homeContact.formCategories || []).map((cat) => ({
-            name: cat.name,
-            value: cat.value,
-          })),
-        }
-      : {
-          title: "Send Us Message",
-          subtitle: "BOOK APPOINTMENT",
-          mapEmbedUrl:
-            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6678.7619084840835!2d144.9618311901502!3d-37.81450084255415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642b4758afc1d%3A0x3119cc820fdfc62e!2sEnvato!5e0!3m2!1sen!2sbd!4v1641984054261!5m2!1sen!2sbd",
-          formCategories: [
-            { name: "Real Estate", value: "real-estate" },
-            { name: "Property management", value: "property-management" },
-            { name: "Market analysis", value: "market-analysis" },
-            { name: "Home interior", value: "home-interior" },
-          ],
-        };
+
+    if (!homeContact) {
+      throw new Error("Home contact data not found in database");
+    }
+
+    return {
+      title: homeContact.title,
+      subtitle: homeContact.subtitle,
+      mapEmbedUrl: homeContact.mapEmbedUrl,
+      formCategories: (homeContact.formCategories || []).map((cat) => ({
+        name: cat.name,
+        value: cat.value,
+      })),
+    };
   } catch (error) {
     console.error("Error fetching home contact data:", error);
-    return {
-      title: "Send Us Message",
-      subtitle: "BOOK APPOINTMENT",
-      mapEmbedUrl:
-        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6678.7619084840835!2d144.9618311901502!3d-37.81450084255415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642b4758afc1d%3A0x3119cc820fdfc62e!2sEnvato!5e0!3m2!1sen!2sbd!4v1641984054261!5m2!1sen!2sbd",
-      formCategories: [
-        { name: "Real Estate", value: "real-estate" },
-        { name: "Property management", value: "property-management" },
-        { name: "Market analysis", value: "market-analysis" },
-        { name: "Home interior", value: "home-interior" },
-      ],
-    };
+    throw error;
   }
 }
 

@@ -4,6 +4,8 @@ import HomeAbout from "@/models/HomeAbout";
 import Image from "next/image";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "About Us - Ajit Properties",
 };
@@ -12,80 +14,15 @@ async function getAboutData() {
   try {
     await connectDB();
     const about = await HomeAbout.findOne().lean();
+
     if (!about) {
-      return {
-        title: "Where Finding a House Feels Like Home",
-        subtitle: "WHO WE ARE",
-        description:
-          "At our core, we believe finding a home should feel comforting, not complicated. That's why we offer trusted listings, expert support, and a seamless experience tailored to your needs and dreams.",
-        mainImage: "/assets/img/home-1/about/about-01.png",
-        secondaryImage: "/assets/img/home-1/about/about-02.png",
-        rightShapeImage: "/assets/img/home-1/about/right-shape.png",
-        features: [
-          {
-            text: "Pontificate the client proactively",
-          },
-          {
-            text: "Does the selected item have a waiting list?",
-          },
-          {
-            text: "Instant 24-hour Emergency",
-          },
-        ],
-        button: {
-          text: "ABOUT US MORE",
-          link: "/about",
-        },
-        counterValue: "697",
-        counterLabel: "LISTED PROPERTIES",
-        phoneNumber: "+208-6666-0112",
-      };
+      throw new Error("About data not found in database");
     }
-    // Return the data with defaults for missing fields
-    return {
-      ...about,
-      button: about.button || {
-        text: "ABOUT US MORE",
-        link: "/about",
-      },
-      rightShapeImage:
-        about.rightShapeImage || "/assets/img/home-1/about/right-shape.png",
-      mainImage: about.mainImage || "/assets/img/home-1/about/about-01.png",
-      secondaryImage:
-        about.secondaryImage || "/assets/img/home-1/about/about-02.png",
-      counterValue: about.counterValue || "697",
-      counterLabel: about.counterLabel || "LISTED PROPERTIES",
-      phoneNumber: about.phoneNumber || "+208-6666-0112",
-    };
+
+    return about;
   } catch (error) {
     console.error("Error fetching about data:", error);
-    return {
-      title: "Where Finding a House Feels Like Home",
-      subtitle: "WHO WE ARE",
-      description:
-        "At our core, we believe finding a home should feel comforting, not complicated. That's why we offer trusted listings, expert support, and a seamless experience tailored to your needs and dreams.",
-      mainImage: "/assets/img/home-1/about/about-01.png",
-      secondaryImage: "/assets/img/home-1/about/about-02.png",
-      rightShapeImage: "/assets/img/home-1/about/right-shape.png",
-      features: [
-        {
-          text: "Pontificate the client proactively",
-        },
-        {
-          text: "Does the selected item have a waiting list?",
-        },
-        {
-          text: "Instant 24-hour Emergency",
-        },
-      ],
-      button: {
-        text: "ABOUT US MORE",
-        link: "/about",
-      },
-      counterValue: "697",
-      counterLabel: "LISTED PROPERTIES",
-      phoneNumber: "+208-6666-0112",
-    };
+    throw error;
   }
 }
 
