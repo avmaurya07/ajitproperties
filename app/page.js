@@ -799,7 +799,7 @@ async function getHomeContactData() {
   try {
     await connectDB();
     const contact = await HomeContact.findOne().lean();
-    console.log("Fetched contact data:", contact);
+    // console.log("Fetched contact data:", contact);
     if (!contact) {
       return {
         title: "Contact Us",
@@ -909,7 +909,7 @@ async function getHomeProjectData() {
     //     ],
     //   };
     // }
-    console.log("Fetched projects data:", projects);
+    // console.log("Fetched projects data:", projects);
     return projects;
   } catch (error) {
     console.error("Error fetching projects data:", error);
