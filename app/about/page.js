@@ -1,6 +1,7 @@
 import Breadcrumb from "@/app/components/Breadcrumb";
 import connectDB from "@/lib/mongodb";
 import HomeAbout from "@/models/HomeAbout";
+import FooterModel from "@/models/Footer";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -19,15 +20,34 @@ async function getAboutData() {
       throw new Error("About data not found in database");
     }
 
-    return about;
+    // Serialize to plain JavaScript object for Client Components
+    return JSON.parse(JSON.stringify(about));
   } catch (error) {
     console.error("Error fetching about data:", error);
     throw error;
   }
 }
 
+async function getFooterData() {
+  try {
+    await connectDB();
+    const footer = await FooterModel.findOne().lean();
+
+    if (!footer) {
+      throw new Error("Footer data not found in database");
+    }
+
+    // Serialize to plain JavaScript object
+    return JSON.parse(JSON.stringify(footer));
+  } catch (error) {
+    console.error("Error fetching footer data:", error);
+    throw error;
+  }
+}
+
 export default async function AboutPage() {
   const about = await getAboutData();
+  const footer = await getFooterData();
   const breadcrumbItems = [{ label: "Home", link: "/" }, { label: "About Us" }];
 
   return (
@@ -65,7 +85,7 @@ export default async function AboutPage() {
                   </div>
                   <div className="counter-box">
                     <h2>
-                      <span className="count">{about.counterValue}</span>
+                      <span className="count">{about.counterValue}</span>k+
                     </h2>
                     <p>{about.counterLabel}</p>
                   </div>
@@ -86,7 +106,7 @@ export default async function AboutPage() {
                     {about.description}
                   </p>
                   <ul className="wow fadeInUp" data-wow-delay=".7s">
-                    {about.features.map((feature, index) => (
+                    {(about?.features || []).map((feature, index) => (
                       <li key={index}>
                         <i className="flaticon-right-arrow"></i> {feature.text}
                       </li>
@@ -96,21 +116,23 @@ export default async function AboutPage() {
                     {/* <Link href={about.button.link} className="theme-btn">
                       {about.button.text} <i className="flaticon-home"></i>
                     </Link> */}
-                    <div className="call-info">
-                      <div className="icon">
-                        <i className="fa-solid fa-phone-xmark"></i>
+                    {about?.phoneNumber && (
+                      <div className="call-info">
+                        <div className="icon">
+                          <i className="fa-solid fa-phone-xmark"></i>
+                        </div>
+                        <div className="content">
+                          <span>Call Us 24/7</span>
+                          <h4>
+                            <a
+                              href={`tel:${about.phoneNumber.replace(/[^0-9+]/g, "")}`}
+                            >
+                              {about.phoneNumber}
+                            </a>
+                          </h4>
+                        </div>
                       </div>
-                      <div className="content">
-                        <span>Call Us 24/7</span>
-                        <h4>
-                          <a
-                            href={`tel:${about.phoneNumber.replace(/[^0-9+]/g, "")}`}
-                          >
-                            {about.phoneNumber}
-                          </a>
-                        </h4>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
