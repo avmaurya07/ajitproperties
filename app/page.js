@@ -2,6 +2,7 @@ import Header from "@/app/components/Header";
 import PropertyCard from "@/app/components/PropertyCard";
 import ContactForm from "@/app/components/ContactForm";
 import FeaturedPropertiesSlider from "@/app/components/FeaturedPropertiesSlider";
+import HomeVideoSlider from "@/app/components/HomeVideoSlider";
 import Link from "next/link";
 
 import Image from "next/image";
@@ -116,13 +117,22 @@ export default async function HomePage() {
     <>
       <Header />
 
-      <section className="hero-section hero-1 fix">
+      <section
+        className="hero-section hero-1 fix pb-5"
+        style={{
+          backgroundImage: `url(${heroData.backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="container-fluid">
           <div className="row g-4 align-items-center">
             <div className="col-xl-7">
               <div className="hero-content">
                 <h5 className="wow fadeInUp">
-                  <i className="flaticon-home"></i> {heroData.subtitle}
+                  {heroData.subtitle && <i className="flaticon-home"></i>}{" "}
+                  {heroData.subtitle}
                 </h5>
                 <h1 className="wow fadeInUp" data-wow-delay=".2s">
                   {heroData.title.split("<br />").map((line, index) => (
@@ -146,7 +156,7 @@ export default async function HomePage() {
                         data-wow-delay={`${0.2 + index * 0.2}s`}
                       >
                         <a
-                          href={`#${category.name}`}
+                          href={`#${category.name.replace(/\s+/g, "-")}`}
                           data-bs-toggle="tab"
                           className={`nav-link ${index === 0 ? "active" : ""}`}
                         >
@@ -159,7 +169,7 @@ export default async function HomePage() {
                     {heroData.searchCategories.map((category, index) => (
                       <div
                         key={index}
-                        id={category.name}
+                        id={category.name.replace(/\s+/g, "-")}
                         className={`tab-pane fade ${index === 0 ? "show active" : ""}`}
                       >
                         <form
@@ -229,23 +239,13 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="col-xl-5">
-              <div className="hero-image">
-                <Image
-                  src={heroData.backgroundImage}
-                  alt="img"
-                  width={800}
-                  height={900}
-                />
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      <section className="house-offer-section fix section-padding section-bg">
+      <section className="house-offer-section fix py-12 section-bg">
         <div className="container">
-          <div className="section-title text-center">
+          <div className="section-title text-center mb-8">
             <h5 className="wow fadeInUp">
               <i className="flaticon-home"></i> {offersData.subtitle}{" "}
               <i className="flaticon-home"></i>
@@ -258,13 +258,13 @@ export default async function HomePage() {
             {(offersData?.offers || []).map((offer, index) => (
               <div
                 key={index}
-                className={`col wow fadeInUp${index > 0 ? ` data-wow-delay=".${index * 2}s"` : ""}`}
+                className="col wow fadeInUp"
+                data-wow-delay={`${index * 0.2}s`}
               >
                 <div className="house-offer-box">
                   <div className="icon">
                     <i className={offer.icon}></i>
                   </div>
-                  {/* <span>{offer.name}</span> */}
                   <div className="content">
                     <h4>{offer.name}</h4>
                     <p>{offer.count}</p>
@@ -273,6 +273,21 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="propertie-section fix pt-0">
+        <div className="container">
+          <div className="section-title text-center">
+            <h5
+              className="wow fadeInUp"
+              style={{ textTransform: "uppercase" }}
+            ></h5>
+            <h2 className="wow fadeInUp" data-wow-delay=".3s">
+              {videoData.title}
+            </h2>
+          </div>
+          <HomeVideoSlider videos={videoData?.videoUrl || []} />
         </div>
       </section>
 
@@ -432,55 +447,6 @@ export default async function HomePage() {
                   />
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="propertie-section fix section-padding">
-        <div className="container">
-          <div className="section-title text-center">
-            <h5
-              className="wow fadeInUp"
-              style={{ textTransform: "uppercase" }}
-            ></h5>
-            <h2 className="wow fadeInUp" data-wow-delay=".3s">
-              {videoData.title}
-            </h2>
-          </div>
-          <div
-            className="propertie-wrapper"
-            style={{
-              borderRadius: "16px",
-              overflow: "hidden",
-              boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
-            }}
-          >
-            <div
-              style={{
-                position: "relative",
-                paddingBottom: "56.25%",
-                height: 0,
-                overflow: "hidden",
-              }}
-            >
-              <video
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-                controls
-                autoPlay
-                muted
-                loop
-              >
-                <source src={videoData.videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
             </div>
           </div>
         </div>
