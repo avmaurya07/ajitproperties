@@ -1,51 +1,39 @@
 "use client";
-import { useState, useRef } from "react";
+
+function extractYouTubeId(url) {
+  try {
+    // youtu.be/VIDEO_ID?...
+    if (url.includes("youtu.be")) {
+      return url.split("youtu.be/")[1].split("?")[0];
+    }
+
+    // youtube.com/watch?v=VIDEO_ID
+    if (url.includes("youtube.com")) {
+      return new URL(url).searchParams.get("v");
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 export default function VideoPlayer({ src, className = "" }) {
-  const [isPaused, setIsPaused] = useState(true);
-  const videoRef = useRef(null);
+  const videoId = extractYouTubeId(src);
 
-  const togglePlayPause = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsPaused(false);
-      } else {
-        videoRef.current.pause();
-        setIsPaused(true);
-      }
-    }
-  };
+  if (!videoId) return null;
+
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&modestbranding=1&loop=1&playlist=${videoId}`;
 
   return (
-    <div className="relative group">
-      <video
-        ref={videoRef}
-        onClick={togglePlayPause}
-        onPlay={() => setIsPaused(false)}
-        onPause={() => setIsPaused(true)}
-        className={`cursor-pointer ${className}`}
-      >
-        <source src={src} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
-      {isPaused && (
-        <div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
-          onClick={togglePlayPause}
-        >
-          <div className="w-16 h-16 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-200">
-            <svg
-              className="w-8 h-8 text-gray-800 ml-1"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </div>
-      )}
+    <div className={`relative w-full h-full overflow-hidden ${className}`}>
+      <iframe
+        src={embedUrl}
+        className="w-full h-full"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowFullScreen
+        loading="lazy"
+      />
     </div>
   );
 }

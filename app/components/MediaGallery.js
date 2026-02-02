@@ -67,61 +67,44 @@ export default function MediaGallery({
 
           {/* Thumbnail row - show remaining media */}
           {allMedia.length > 1 && (
-            <div className="mt-3 flex flex-row gap-1 md:gap-1 row">
-              {/* Second media item */}
-              {allMedia[1] && (
-                <div className="flex-1 min-w-0 col-xl-4 col-lg-6 col-md-6">
-                  <div className="details-image" onClick={() => openGallery(1)}>
-                    <div className="relative h-48 w-full cursor-pointer bg-white rounded-lg overflow-hidden">
-                      {allMedia[1].type === "video" ? (
-                        <VideoPlayer
-                          src={allMedia[1].src}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <Image
-                          src={allMedia[1].src}
-                          alt={`${propertyName} - 2`}
-                          fill
-                          className="object-cover"
-                        />
-                      )}
-                    </div>
+            <div
+              className="mt-3 grid gap-2"
+              style={{
+                gridTemplateColumns: `repeat(${Math.min(allMedia.length - 1, 5)}, minmax(0, 1fr))`,
+              }}
+            >
+              {allMedia.slice(1, 6).map((media, index) => (
+                <div
+                  key={index}
+                  className="w-full"
+                  onClick={() => openGallery(index + 1)}
+                >
+                  <div className="relative w-full aspect-[4/3] cursor-pointer bg-white rounded-lg overflow-hidden">
+                    {media.type === "video" ? (
+                      <VideoPlayer
+                        src={media.src}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src={media.src}
+                        alt={`${propertyName} - ${index + 2}`}
+                        fill
+                        className="object-cover"
+                      />
+                    )}
+
+                    {/* +X overlay */}
+                    {index === 4 && allMedia.length > 6 && (
+                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                        <span className="text-white text-3xl font-bold">
+                          +{allMedia.length - 5}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
-              )}
-
-              {/* Third media item with +x overlay if more exist */}
-              {allMedia[2] && (
-                <div className="flex-1 min-w-0 col-xl-4 col-lg-6 col-md-6">
-                  <div className="details-image" onClick={() => openGallery(2)}>
-                    <div className="relative h-48 w-full cursor-pointer bg-white rounded-lg overflow-hidden">
-                      {allMedia[2].type === "video" ? (
-                        <VideoPlayer
-                          src={allMedia[2].src}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <Image
-                          src={allMedia[2].src}
-                          alt={`${propertyName} - 3`}
-                          fill
-                          className="object-cover"
-                        />
-                      )}
-
-                      {/* Overlay for additional media count */}
-                      {allMedia.length > 3 && (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-lg">
-                          <span className="text-white text-3xl font-bold select-none">
-                            +{allMedia.length - 3}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
+              ))}
             </div>
           )}
         </>
