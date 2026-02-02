@@ -66,11 +66,11 @@ export default function MediaGallery({
           </div>
 
           {/* Thumbnail row - show remaining media */}
-          {allMedia.length > 1 && (
+          {allMedia.length > 0 && (
             <div
               className="mt-3 grid gap-2"
               style={{
-                gridTemplateColumns: `repeat(${Math.min(allMedia.length - 1, 5)}, minmax(0, 1fr))`,
+                gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
               }}
             >
               {allMedia.slice(1, 6).map((media, index) => (
@@ -81,10 +81,7 @@ export default function MediaGallery({
                 >
                   <div className="relative w-full aspect-[4/3] cursor-pointer bg-white rounded-lg overflow-hidden">
                     {media.type === "video" ? (
-                      <VideoPlayer
-                        src={media.src}
-                        className="w-full h-full object-cover"
-                      />
+                      <VideoPlayer src={media.src} className="w-full h-full" />
                     ) : (
                       <Image
                         src={media.src}
