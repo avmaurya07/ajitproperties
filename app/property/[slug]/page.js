@@ -163,24 +163,14 @@ export default async function PropertyDetailsPage({ params }) {
                       <ul className="flex flex-wrap items-center gap-6">
                         {property.area > 0 && (
                           <li className="flex items-center gap-2 whitespace-nowrap">
-                            <Image
-                              src="/assets/img/home-1/project/full-screen.png"
-                              alt="Area"
-                              width={20}
-                              height={20}
-                            />
+                            <i className="fa-solid fa-border-all text-orange-400"></i>
                             <span>{property.area} sqft</span>
                           </li>
                         )}
 
                         {property.bedrooms > 0 && (
                           <li className="flex items-center gap-2 whitespace-nowrap">
-                            <Image
-                              src="/assets/img/home-1/project/bed.png"
-                              alt="Bedrooms"
-                              width={20}
-                              height={20}
-                            />
+                            <i className="fa-solid fa-bed text-orange-400"></i>
                             <span>
                               {property.bedrooms} Bedroom
                               {property.bedrooms > 1 ? "s" : ""}
@@ -190,12 +180,7 @@ export default async function PropertyDetailsPage({ params }) {
 
                         {property.bathrooms > 0 && (
                           <li className="flex items-center gap-2 whitespace-nowrap">
-                            <Image
-                              src="/assets/img/home-1/project/user.png"
-                              alt="Bathrooms"
-                              width={20}
-                              height={20}
-                            />
+                            <i className="fa-solid fa-bath text-orange-400"></i>
                             <span>
                               {property.bathrooms} Bath
                               {property.bathrooms > 1 ? "s" : ""}
@@ -218,12 +203,7 @@ export default async function PropertyDetailsPage({ params }) {
                         </li> */}
 
                         <li className="flex items-center gap-2 whitespace-nowrap">
-                          <Image
-                            src="/assets/img/home-1/project/bed.png"
-                            alt="Status"
-                            width={20}
-                            height={20}
-                          />
+                          <i className="fa-solid fa-circle-check text-orange-400"></i>
                           <span>
                             Status:{" "}
                             {property.status.charAt(0).toUpperCase() +

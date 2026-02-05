@@ -58,12 +58,7 @@ export default function PropertyCard({ property, isSlider = false }) {
         <ul className="project-list">
           {property.area > 0 && (
             <li>
-              <Image
-                src="/assets/img/home-1/project/full-screen.png"
-                alt="img"
-                width={20}
-                height={20}
-              />
+              <i className="fa-solid fa-border-all text-orange-400"></i>
               {property.area} sqft
             </li>
           )}

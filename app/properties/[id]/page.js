@@ -3,6 +3,7 @@ import Footer from "@/app/components/Footer";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import PropertyCard from "@/app/components/PropertyCard";
 import RangeFilter from "@/app/components/RangeFilter";
+import LocationAutocomplete from "@/app/components/LocationAutocomplete";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import connectDB from "@/lib/mongodb";
@@ -283,11 +284,10 @@ export default async function PropertiesPage({ params, searchParams }) {
                   {/* Location */}
                   <div className="mb-3">
                     <label className="form-label fw-semibold">Location</label>
-                    <input
-                      type="text"
+                    <LocationAutocomplete
+                      key={location || "location-autocomplete"}
+                      defaultValue={location}
                       name="location"
-                      defaultValue={location || ""}
-                      className="form-control"
                       placeholder="Enter location"
                     />
                   </div>
