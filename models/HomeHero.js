@@ -16,8 +16,8 @@ const homeHeroSchema = new mongoose.Schema(
         "Discover the perfect home that fits your lifestyle and budget. Browse our exclusive listings and find your ideal property today.",
     },
     backgroundImage: {
-      type: String,
-      default: "/assets/img/home/banner.jpeg",
+      type: [String],
+      default: ["/assets/img/home/banner.jpeg"],
     },
     searchCategories: [
       {
