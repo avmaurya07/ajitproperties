@@ -62,28 +62,18 @@ export default function PropertyCard({ property, isSlider = false }) {
               {property.area} sqft
             </li>
           )}
-          {/* {property.bedrooms > 0 && (
+          {property.bedrooms > 0 && (
             <li>
-              <Image
-                src="/assets/img/home-1/project/bed.png"
-                alt="img"
-                width={20}
-                height={20}
-              />
-              Bed {property.bedrooms}
+              <i className="fa-solid fa-bed text-orange-400"></i>
+              {property.bedrooms}
             </li>
           )}
           {property.bathrooms > 0 && (
             <li>
-              <Image
-                src="/assets/img/home-1/project/user.png"
-                alt="img"
-                width={20}
-                height={20}
-              />
-              Bath {property.bathrooms}
+              <i className="fa-solid fa-bath text-orange-400"></i>
+              <span>{property.bathrooms}</span>
             </li>
-          )} */}
+          )}
         </ul>
         <Link href={`/property/${property.slug}`} className="project-link-btn">
           <i className="flaticon-home"></i>View Details
@@ -96,5 +86,5 @@ export default function PropertyCard({ property, isSlider = false }) {
     return cardContent;
   }
 
-  return <div className="col-xl-4 col-lg-6 col-md-6">{cardContent}</div>;
+  return <div className="col-xl-5 col-lg-6 col-md-6">{cardContent}</div>;
 }
