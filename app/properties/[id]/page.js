@@ -2,6 +2,7 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import PropertyCard from "@/app/components/PropertyCard";
+import RangeFilter from "@/app/components/RangeFilter";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import connectDB from "@/lib/mongodb";
@@ -81,6 +82,53 @@ async function getPropertiesWithPagination(page = 1, category, filters = {}) {
   }
 }
 
+async function getGlobalStats(category) {
+  try {
+    await connectDB();
+    const matchStage = category ? { type: category } : {};
+    const stats = await Property.aggregate([
+      { $match: matchStage },
+      {
+        $group: {
+          _id: null,
+          minPrice: { $min: "$price" },
+          maxPrice: { $max: "$price" },
+          minArea: { $min: "$area" },
+          maxArea: { $max: "$area" },
+          maxBedrooms: { $max: "$bedrooms" },
+          maxBathrooms: { $max: "$bathrooms" },
+        },
+      },
+    ]);
+    if (stats.length > 0) {
+      return {
+        price: {
+          min: stats[0].minPrice || 0,
+          max: stats[0].maxPrice || 1000000,
+        },
+        area: {
+          min: stats[0].minArea || 0,
+          max: stats[0].maxArea || 10000,
+        },
+        bedrooms: {
+          max: stats[0].maxBedrooms || 10,
+        },
+        bathrooms: {
+          max: stats[0].maxBathrooms || 10,
+        },
+      };
+    }
+  } catch (error) {
+    console.error("❌ Error fetching stats:", error);
+  }
+  return {
+    price: { min: 0, max: 1000000 },
+    area: { min: 0, max: 10000 },
+    bedrooms: { max: 10 },
+    bathrooms: { max: 10 },
+  };
+}
+
 /* ------------------------------- FOOTER ------------------------------- */
 async function getFooterData() {
   try {
@@ -133,13 +181,33 @@ export default async function PropertiesPage({ params, searchParams }) {
   if (!categoryParam || !ALLOWED_CATEGORIES.includes(categoryParam)) {
     notFound();
   }
-  const { page, bedrooms, bathrooms, area, minPrice, maxPrice, location } =
-    await searchParams;
+  const {
+    page,
+    bedrooms,
+    bathrooms,
+    area,
+    minArea,
+    maxArea,
+    minPrice,
+    maxPrice,
+    location,
+  } = await searchParams;
 
   const filters = {};
   if (bedrooms) filters.bedrooms = { $gte: parseInt(bedrooms) };
   if (bathrooms) filters.bathrooms = { $gte: parseInt(bathrooms) };
-  if (area) filters.area = { $gte: parseInt(area) };
+
+  // Area Filter (Single Slider, min area)
+  if (area) {
+    filters.area = { $gte: parseInt(area) };
+  } else if (minArea || maxArea) {
+    // Keep fallback for legacy/url support if needed, or just prioritize area
+    filters.area = {};
+    if (minArea) filters.area.$gte = parseInt(minArea);
+    if (maxArea) filters.area.$lte = parseInt(maxArea);
+  }
+
+  // Price Range Filter
   if (minPrice || maxPrice) {
     filters.price = {};
     if (minPrice) filters.price.$gte = parseInt(minPrice);
@@ -147,10 +215,12 @@ export default async function PropertiesPage({ params, searchParams }) {
   }
   if (location) filters.location = { $regex: location, $options: "i" };
 
-  const { properties, totalPages, currentPage } =
-    await getPropertiesWithPagination(page, categoryParam, filters);
-
-  const footerData = await getFooterData();
+  const [{ properties, totalPages, currentPage }, footerData, globalStats] =
+    await Promise.all([
+      getPropertiesWithPagination(page, categoryParam, filters),
+      getFooterData(),
+      getGlobalStats(categoryParam),
+    ]);
 
   const categoryTitle =
     categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
@@ -227,13 +297,21 @@ export default async function PropertiesPage({ params, searchParams }) {
                     <label className="form-label fw-semibold">
                       Min Bedrooms
                     </label>
-                    <input
-                      type="number"
+                    <select
                       name="bedrooms"
                       defaultValue={bedrooms || ""}
-                      className="form-control"
-                      min="0"
-                    />
+                      className="form-select"
+                    >
+                      <option value="">Any</option>
+                      {Array.from(
+                        { length: globalStats.bedrooms.max + 1 },
+                        (_, i) => (
+                          <option key={i} value={i}>
+                            {i}+
+                          </option>
+                        ),
+                      )}
+                    </select>
                   </div>
 
                   {/* Bathrooms */}
@@ -241,47 +319,53 @@ export default async function PropertiesPage({ params, searchParams }) {
                     <label className="form-label fw-semibold">
                       Min Bathrooms
                     </label>
-                    <input
-                      type="number"
+                    <select
                       name="bathrooms"
                       defaultValue={bathrooms || ""}
-                      className="form-control"
-                      min="0"
-                    />
+                      className="form-select"
+                    >
+                      <option value="">Any</option>
+                      {Array.from(
+                        { length: globalStats.bathrooms.max + 1 },
+                        (_, i) => (
+                          <option key={i} value={i}>
+                            {i}+
+                          </option>
+                        ),
+                      )}
+                    </select>
                   </div>
 
                   {/* Area */}
                   <div className="mb-3">
-                    <label className="form-label fw-semibold">
+                    <label className="form-label fw-semibold mb-3">
                       Min Area (sq ft)
                     </label>
-                    <input
-                      type="number"
+                    <RangeFilter
+                      key={`area-${area || "default"}`}
+                      isSingle={true}
+                      min={0}
+                      max={globalStats.area.max}
+                      initialMin={area}
                       name="area"
-                      defaultValue={area || ""}
-                      className="form-control"
-                      min="0"
+                      format="area"
                     />
                   </div>
 
                   {/* Price */}
                   <div className="mb-3">
-                    <label className="form-label fw-semibold">
+                    <label className="form-label fw-semibold mb-3">
                       Price Range
                     </label>
-                    <input
-                      type="number"
-                      name="minPrice"
-                      placeholder="Min"
-                      defaultValue={minPrice || ""}
-                      className="form-control mb-2"
-                    />
-                    <input
-                      type="number"
-                      name="maxPrice"
-                      placeholder="Max"
-                      defaultValue={maxPrice || ""}
-                      className="form-control"
+                    <RangeFilter
+                      key={`price-${minPrice || "min"}-${maxPrice || "max"}`}
+                      min={globalStats.price.min}
+                      max={globalStats.price.max}
+                      initialMin={minPrice}
+                      initialMax={maxPrice}
+                      minName="minPrice"
+                      maxName="maxPrice"
+                      format="currency"
                     />
                   </div>
 
