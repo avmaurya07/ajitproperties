@@ -67,7 +67,7 @@ export default function PropertyCard({ property, isSlider = false }) {
               {property.area} sqft
             </li>
           )}
-          {property.bedrooms > 0 && (
+          {/* {property.bedrooms > 0 && (
             <li>
               <Image
                 src="/assets/img/home-1/project/bed.png"
@@ -88,7 +88,7 @@ export default function PropertyCard({ property, isSlider = false }) {
               />
               Bath {property.bathrooms}
             </li>
-          )}
+          )} */}
         </ul>
         <Link href={`/property/${property.slug}`} className="project-link-btn">
           <i className="flaticon-home"></i>View Details

@@ -4,7 +4,6 @@ import ContactForm from "@/app/components/ContactForm";
 import FeaturedPropertiesSlider from "@/app/components/FeaturedPropertiesSlider";
 import HomeVideoSlider from "@/app/components/HomeVideoSlider";
 import Link from "next/link";
-
 import Image from "next/image";
 import connectDB from "@/lib/mongodb";
 import Property from "@/models/Property";
@@ -18,14 +17,9 @@ import HomeTestimonial from "@/models/HomeTestimonial";
 import HomeContact from "@/models/HomeContact";
 import HomeVideo from "@/models/HomeVideo";
 import HomeProject from "@/models/HomeProject";
-import { navigate } from "next/dist/client/components/segment-cache/navigation";
+import HomeHeroSection from "@/app/components/HomeHeroSection";
 
 export const dynamic = "force-dynamic";
-
-export const metadata = {
-  title: "Ajit Properties - Real Estate Properties",
-  description: "Find your dream property with Ajit Properties",
-};
 
 // Single optimized function to fetch all home page data in one database call
 async function getAllHomePageData() {
@@ -113,135 +107,14 @@ export default async function HomePage() {
     video: videoData,
     projects: projectsData,
   } = await getAllHomePageData();
+
+  /* Removed useEffect for hero slider as it is now in HomeHeroSection */
+
   return (
     <>
       <Header />
 
-      <section
-        className="hero-section hero-1 fix pb-5"
-        style={{
-          backgroundImage: `url(${heroData.backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="container-fluid">
-          <div className="row g-4 align-items-center">
-            <div className="col-xl-7">
-              <div className="hero-content">
-                <h5 className="wow fadeInUp">
-                  {heroData.subtitle && <i className="flaticon-home"></i>}{" "}
-                  {heroData.subtitle}
-                </h5>
-                <h1 className="wow fadeInUp" data-wow-delay=".2s">
-                  {heroData.title.split("<br />").map((line, index) => (
-                    <span key={index}>
-                      {line}
-                      {index < heroData.title.split("<br />").length - 1 && (
-                        <br />
-                      )}
-                    </span>
-                  ))}
-                </h1>
-                <p className="wow fadeInUp" data-wow-delay=".4s">
-                  {heroData.description}
-                </p>
-                <div className="form-area">
-                  <ul className="nav">
-                    {heroData.searchCategories.map((category, index) => (
-                      <li
-                        key={index}
-                        className="nav-item wow fadeInUp"
-                        data-wow-delay={`${0.2 + index * 0.2}s`}
-                      >
-                        <a
-                          href={`#${category.name.replace(/\s+/g, "-")}`}
-                          data-bs-toggle="tab"
-                          className={`nav-link ${index === 0 ? "active" : ""}`}
-                        >
-                          {category.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="tab-content">
-                    {heroData.searchCategories.map((category, index) => (
-                      <div
-                        key={index}
-                        id={category.name.replace(/\s+/g, "-")}
-                        className={`tab-pane fade ${index === 0 ? "show active" : ""}`}
-                      >
-                        <form
-                          action={`/properties/${category.value}`}
-                          method="get"
-                          className="wow fadeInUp"
-                          data-wow-delay=".3s"
-                        >
-                          <div className="row g-4 align-items-center justify-content-between">
-                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                              <div className="form-item">
-                                <h6>Location</h6>
-                                <input
-                                  type="text"
-                                  name="location"
-                                  placeholder="Looking For?"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                              <div className="form-item">
-                                <h6>Bedrooms</h6>
-                                <input
-                                  type="number"
-                                  name="bedrooms"
-                                  placeholder="Min Bedrooms"
-                                  min="0"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                              <div className="form-item">
-                                <h6>Bathrooms</h6>
-                                <input
-                                  type="number"
-                                  name="bathrooms"
-                                  placeholder="Min Bathrooms"
-                                  min="0"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                              <div className="form-item text-align-right">
-                                <button type="submit" className="theme-btn">
-                                  Search{" "}
-                                  <i className="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                        <div className="button-list">
-                          {(heroData?.buttonLinks || []).map((link, idx) => (
-                            <Link
-                              key={idx}
-                              href={link.url}
-                              className="theme-btn wow fadeInUp"
-                              data-wow-delay={`${0.2 + idx * 0.2}s`}
-                            >
-                              {link.text} <i className={link.icon}></i>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHeroSection heroData={heroData} />
 
       <section className="house-offer-section fix py-12 section-bg">
         <div className="container">

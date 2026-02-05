@@ -2,7 +2,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-
+export const metadata = {
+  title: "Ajit Properties - Real Estate Properties",
+  description: "Find your dream property with Ajit Properties",
+};
 export default function Header() {
   const pathname = usePathname();
 
@@ -80,7 +83,12 @@ export default function Header() {
                         <Link href="/">Home</Link>
                       </li>
                       <li>
-                        <Link href="#">Properties</Link>
+                        <Link href="#">
+                          Properties
+                          <span>
+                            <i className="fa-solid fa-chevron-down"></i>
+                          </span>
+                        </Link>
                         <ul className="submenu">
                           <li>
                             <Link href="/properties/Apartment">Apartment</Link>

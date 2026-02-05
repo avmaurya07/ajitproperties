@@ -126,11 +126,19 @@ export default async function PropertyDetailsPage({ params }) {
                         {property.location}
                       </span>
                       <div className="flex items-center gap-3">
-                        <span className="badge bg-blue-600 text-white px-4 py-2 rounded-md font-semibold">
+                        <span
+                          className="badge bg-blue-600 text-white px-4 py-2 rounded-md font-semibold"
+                          title={
+                            property.price
+                              ? `₹${property.price.toString()}`
+                              : ""
+                          }
+                        >
                           {property.price
                             ? formatPrice(property.price)
                             : "Price on Request"}
                         </span>
+
                         {!property.available && (
                           <span className="badge bg-red-600 text-white px-4 py-2 rounded-md font-semibold">
                             Not Available
@@ -150,64 +158,77 @@ export default async function PropertyDetailsPage({ params }) {
                     </div>
 
                     <div className="list-items">
-                      <h3>Property Overview</h3>
-                      <ul>
+                      <h3 className="mb-2">Property Overview</h3>
+
+                      <ul className="flex flex-wrap items-center gap-6">
                         {property.area > 0 && (
-                          <li>
+                          <li className="flex items-center gap-2 whitespace-nowrap">
                             <Image
                               src="/assets/img/home-1/project/full-screen.png"
                               alt="Area"
                               width={20}
                               height={20}
                             />
-                            {property.area} sqft
+                            <span>{property.area} sqft</span>
                           </li>
                         )}
+
                         {property.bedrooms > 0 && (
-                          <li>
+                          <li className="flex items-center gap-2 whitespace-nowrap">
                             <Image
                               src="/assets/img/home-1/project/bed.png"
                               alt="Bedrooms"
                               width={20}
                               height={20}
                             />
-                            {property.bedrooms} Bedroom
-                            {property.bedrooms > 1 ? "s" : ""}
+                            <span>
+                              {property.bedrooms} Bedroom
+                              {property.bedrooms > 1 ? "s" : ""}
+                            </span>
                           </li>
                         )}
+
                         {property.bathrooms > 0 && (
-                          <li>
+                          <li className="flex items-center gap-2 whitespace-nowrap">
                             <Image
                               src="/assets/img/home-1/project/user.png"
                               alt="Bathrooms"
                               width={20}
                               height={20}
                             />
-                            {property.bathrooms} Bath
-                            {property.bathrooms > 1 ? "s" : ""}
+                            <span>
+                              {property.bathrooms} Bath
+                              {property.bathrooms > 1 ? "s" : ""}
+                            </span>
                           </li>
                         )}
-                        <li>
+
+                        {/* <li className="flex items-center gap-2 whitespace-nowrap">
                           <Image
                             src="/assets/img/home-1/project/full-screen.png"
                             alt="Type"
                             width={20}
                             height={20}
                           />
-                          Type:{" "}
-                          {property.type.charAt(0).toUpperCase() +
-                            property.type.slice(1)}
-                        </li>
-                        <li>
+                          <span>
+                            Type:{" "}
+                            {property.type.charAt(0).toUpperCase() +
+                              property.type.slice(1)}
+                          </span>
+                        </li> */}
+
+                        <li className="flex items-center gap-2 whitespace-nowrap">
                           <Image
                             src="/assets/img/home-1/project/bed.png"
                             alt="Status"
                             width={20}
                             height={20}
                           />
-                          Status:{" "}
-                          {property.status.charAt(0).toUpperCase() +
-                            property.status.slice(1)}
+                          <span>
+                            Status:{" "}
+                            {property.status.charAt(0).toUpperCase() +
+                              property.status.slice(1)}
+                          </span>
                         </li>
                       </ul>
                     </div>
