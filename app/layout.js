@@ -9,6 +9,9 @@ import FooterModel from "@/models/Footer";
 export const metadata = {
   title: "Ajit Properties",
   description: "Real Estate Website",
+  verification: {
+    google: "googlecb71fb20ebd7559a",
+  },
 };
 
 async function getFooterData() {
