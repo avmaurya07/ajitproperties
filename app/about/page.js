@@ -102,9 +102,13 @@ export default async function AboutPage() {
                       {about.title}
                     </h2>
                   </div>
-                  <p className="about-text wow fadeInUp" data-wow-delay=".5s">
-                    {about.description}
-                  </p>
+                  <p
+                    className="about-text wow fadeInUp"
+                    data-wow-delay=".5s"
+                    dangerouslySetInnerHTML={{
+                      __html: about.description.replace(/\n/g, "<br />"),
+                    }}
+                  />
                   <ul className="wow fadeInUp" data-wow-delay=".7s">
                     {(about?.features || []).map((feature, index) => (
                       <li key={index}>
