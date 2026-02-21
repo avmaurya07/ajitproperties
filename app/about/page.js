@@ -20,7 +20,6 @@ async function getAboutData() {
       throw new Error("About data not found in database");
     }
 
-    // Serialize to plain JavaScript object for Client Components
     return JSON.parse(JSON.stringify(about));
   } catch (error) {
     console.error("Error fetching about data:", error);
@@ -37,7 +36,6 @@ async function getFooterData() {
       throw new Error("Footer data not found in database");
     }
 
-    // Serialize to plain JavaScript object
     return JSON.parse(JSON.stringify(footer));
   } catch (error) {
     console.error("Error fetching footer data:", error);
@@ -48,6 +46,7 @@ async function getFooterData() {
 export default async function AboutPage() {
   const about = await getAboutData();
   const footer = await getFooterData();
+
   const breadcrumbItems = [{ label: "Home", link: "/" }, { label: "About Us" }];
 
   return (
@@ -55,7 +54,7 @@ export default async function AboutPage() {
       <Breadcrumb title="About Us" items={breadcrumbItems} />
 
       {/* About Section Start */}
-      <section className="about-section fix section-bg section-padding">
+      <section className="about-section fix section-bg section-padding overflow-visible">
         <div className="right-shape">
           <Image
             src={about.rightShapeImage}
@@ -64,34 +63,44 @@ export default async function AboutPage() {
             height={400}
           />
         </div>
+
         <div className="container">
           <div className="about-wrapper">
             <div className="row g-4 align-items-center">
+              {/* LEFT: STICKY IMAGE */}
               <div className="col-lg-6 wow fadeInUp" data-wow-delay=".3s">
-                <div className="about-image">
-                  <Image
-                    src={about.mainImage}
-                    alt="img"
-                    width={600}
-                    height={700}
-                  />
-                  <div className="about-image-2">
+                <div className="relative lg:sticky lg:top-[100px] z-20">
+                  <div className="about-image">
                     <Image
-                      src={about.secondaryImage}
+                      src={about.mainImage}
                       alt="img"
-                      width={300}
-                      height={300}
+                      width={600}
+                      height={700}
+                      priority
                     />
+
+                    <div className="about-image-2">
+                      <Image
+                        src={about.secondaryImage}
+                        alt="img"
+                        width={300}
+                        height={300}
+                      />
+                    </div>
+
+                    <div className="counter-box">
+                      <h2>
+                        <span className="count">{about.counterValue}</span>k+
+                      </h2>
+                      <p>{about.counterLabel}</p>
+                    </div>
+
+                    <span className="bar-shape"></span>
                   </div>
-                  <div className="counter-box">
-                    <h2>
-                      <span className="count">{about.counterValue}</span>k+
-                    </h2>
-                    <p>{about.counterLabel}</p>
-                  </div>
-                  <span className="bar-shape"></span>
                 </div>
               </div>
+
+              {/* RIGHT: CONTENT */}
               <div className="col-lg-6">
                 <div className="about-content">
                   <div className="section-title mb-0">
@@ -102,6 +111,7 @@ export default async function AboutPage() {
                       {about.title}
                     </h2>
                   </div>
+
                   <p
                     className="about-text wow fadeInUp"
                     data-wow-delay=".5s"
@@ -109,6 +119,7 @@ export default async function AboutPage() {
                       __html: about.description.replace(/\n/g, "<br />"),
                     }}
                   />
+
                   <ul className="wow fadeInUp" data-wow-delay=".7s">
                     {(about?.features || []).map((feature, index) => (
                       <li key={index}>
@@ -116,10 +127,8 @@ export default async function AboutPage() {
                       </li>
                     ))}
                   </ul>
+
                   <div className="about-btn wow fadeInUp" data-wow-delay=".3s">
-                    {/* <Link href={about.button.link} className="theme-btn">
-                      {about.button.text} <i className="flaticon-home"></i>
-                    </Link> */}
                     {about?.phoneNumber && (
                       <div className="call-info">
                         <div className="icon">
@@ -131,7 +140,7 @@ export default async function AboutPage() {
                             <a
                               href={`tel:${about.phoneNumber.replace(/[^0-9+]/g, "")}`}
                             >
-                              {about.phoneNumber}
+                              +91 {about.phoneNumber}
                             </a>
                           </h4>
                         </div>
